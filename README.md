@@ -1,12 +1,23 @@
-Description
+CMU Panoptic
 =============
 
-#### - Panoptic dataset
+#### - CMU Panoptic dataset
 
-Contents
+#### - CMU Panoptic dataset structure
+
+Annotations
 =============
 
-#### - Panoptic dataset annotation builder
+#### - Annotation format
+
+#### - Annotationt structure
+
+Parameters
+=============
+
+#### - Configuration files
+
+#### - Selecting sequences & camera views
 
 Docker Environments
 =============
@@ -32,6 +43,11 @@ How to use
 python main.py --panoptic_config_file_path ./Panoptic_configs/Panoptic_annotations_builder_config.yaml
 ```
 
+#### - Download Panoptic dataset
+
+```
+```
+
 References
 =============
 
@@ -48,6 +64,10 @@ References
 #### - CMU Panoptic dataset
 
 https://www.cs.cmu.edu/~hanbyulj/panoptic-studio/
+
+#### - CMU Panoptic dataset download toolbox
+
+https://github.com/CMU-Perceptual-Computing-Lab/panoptic-toolbox
 
 #### - CMU Panoptic Pytorch dataset class 
 

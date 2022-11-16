@@ -69,8 +69,6 @@ Generated Annotations
             |-- ...
 ```
 
-#### - Refer to configuration file
-
 Docker Environments
 =============
 
@@ -90,14 +88,14 @@ How to use
 =============
 
 #### - Building Panoptic dataset annotations
-  - Refer to config file
+  - Select the dataset and camera id to extract annotations by editing config file
 
 ```
 python main.py --panoptic_config_file_path ./Panoptic_configs/Panoptic_annotations_builder_config.yaml
 ```
 
 #### - Download Panoptic dataset
-  - Select the dataset and camera number to download by editing the values of list in line 11 & 12
+  - Select the dataset and camera id to download by editing the values of list in line 11 & 12
 
 ```
 apt-get install wget

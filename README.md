@@ -12,7 +12,7 @@ Annotations
 
 #### - Annotationt structure
 
-Parameters
+Options
 =============
 
 #### - Configuration files

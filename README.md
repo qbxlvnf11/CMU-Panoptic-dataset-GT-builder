@@ -5,7 +5,7 @@ CMU Panoptic
   - Capture the 3D motion of a group of people engaged in a social interaction
   - The studio structure
   
-  <img src="https://user-images.githubusercontent.com/52263269/202191388-473de652-5c21-40cc-9218-96dc939e9724.png" width="30%"></img>
+  <img src="https://user-images.githubusercontent.com/52263269/202191388-473de652-5c21-40cc-9218-96dc939e9724.png" width="50%"></img>
 
   - Massively multiview system
     - Hardware-based synchronized 480 VGA cameras views

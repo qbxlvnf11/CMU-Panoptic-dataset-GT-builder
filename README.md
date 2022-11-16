@@ -12,12 +12,10 @@ Annotations
 
 #### - Annotationt structure
 
-Options
+Configuration
 =============
 
-#### - Configuration files
-
-#### - Selecting sequences & camera views
+#### - Parameters
 
 Docker Environments
 =============

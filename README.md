@@ -1,7 +1,7 @@
-CMU Panoptic
+CMU Panoptic Dataset
 =============
 
-#### - CMU Panoptic dataset
+#### - Details of CMU Panoptic dataset
   - Capture the 3D motion of a group of people engaged in a social interaction
   - The studio structure
   
@@ -27,7 +27,7 @@ CMU Panoptic
 #### - CMU Panoptic dataset structure
 
 ```
-|-- 16060224_haggling1
+|-- 160224_haggling1
             |   |-- hdImgs
             |   |-- hdvideos
             |   |-- hdPose3d_stage1_coco19
@@ -42,29 +42,40 @@ Generated Annotations
 #### - Generating annotation json files and images with joints 3d & joints 2d & bbox & bbox_vis visualized
 
 #### - Format of annotation json file
- - "bodies": information of people
-   - "view_id": view id (HD camera id)
-   - "id": person id
-   - "num_person": number of the people
-   - "input_width": image width (1920)
-   - "input_height": image height (1080)
-   - "transformed_joints_3d": GT transformed joints 3d,
-   - "transformed_joints_3d_vis": visualization flags of joints 3d,
-   - "projected_joints_2d": GT joints 2d projected by joints 3d using camera parameters in each view
-   - "projected_joints_2d_vis": visualization flags of joints 2d,
-   - "bbox": bounding boxes created by adding and subtracting an offset from the min/maxvalues of x and y values of each person's GT 2D keypoint
-   - "bbox_clip": bbox cliped by image size,
-   - "bbox_vis": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true
-   - "bbox_vis_clip": bbox_vis cliped by image size
+
+```
+{"bodies": [
+  { "view_id": view id (HD camera id),
+  "id": person id,
+  "num_person": number of the people,
+  "input_width": image width (1920),
+  "input_height": image height (1080),
+  "transformed_joints_3d": GT transformed joints 3d,
+  "transformed_joints_3d_vis": visualization flags of joints 3d,
+  "projected_joints_2d": GT joints 2d projected by joints 3d using camera parameters in each view,
+  "projected_joints_2d_vis": visualization flags of joints 2d,
+  "bbox": bounding boxes created by adding and subtracting an offset from the min/maxvalues of x and y values of each person's GT 2D keypoint,
+  "bbox_clip": bbox cliped by image size,
+  "bbox_vis": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true,
+  "bbox_vis_clip": bbox_vis cliped by image size }
+  , ...
+  ]
+}
+```
 
 #### - Annotation structures
 
 ```
-|-- 16060224_haggling1
+|-- 160224_haggling1
             |   |-- 00_01
             |   |   |   |-- annotations
+            |   |   |   |   |   |-- 00_03_00000206_gt.json
+            |   |   |   |   |   |-- ...
             |   |   |   |-- images
+            |   |   |   |   |   |-- 00_03_00000206_vis.jpg
+            |   |   |   |   |   |-- ...
             |   |-- 00_02
+            |   |-- ...
 |-- 160226_haggling1  
             |-- ...
 ```

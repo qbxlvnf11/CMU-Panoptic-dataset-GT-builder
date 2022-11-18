@@ -260,7 +260,10 @@ class Panoptic(JointsDataset):
             for i, file in enumerate(self.anno_files):
                 if i % self._interval == 0:
                     with open(file) as dfile:
-                        bodies = json.load(dfile)['bodies']
+                        try:
+                        	bodies = json.load(dfile)['bodies']
+                        except Exception as e:
+                        	continue
                     if len(bodies) == 0:
                         continue
 
@@ -487,7 +490,3 @@ class Panoptic(JointsDataset):
         gt_ids = [e["gt_id"] for e in eval_list if e["mpjpe"] < threshold]
 
         return len(np.unique(gt_ids)) / total_gt
-
-
-
-

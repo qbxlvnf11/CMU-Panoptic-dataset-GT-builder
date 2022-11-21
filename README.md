@@ -41,6 +41,11 @@ Generated Annotations
 
 #### - Generating annotation json files and images with joints 3d & joints 2d & bbox & bbox_vis visualized
 
+  <img src="https://user-images.githubusercontent.com/52263269/202971006-dd8733de-a8d5-471c-bdb9-20702657e6e1.jpg" width="40%"></img>
+  <img src="https://user-images.githubusercontent.com/52263269/202972107-75075843-87d2-4aa5-8b23-c1dbc835cac7.jpg" width="40%"></img>
+  <img src="https://user-images.githubusercontent.com/52263269/202972266-2bf65cf9-bd80-47ea-a714-f8bf0d396e80.jpg" width="40%"></img>
+  <img src="https://user-images.githubusercontent.com/52263269/202972373-875bcedd-3ac3-42ed-8e7a-2ac8de02dc3d.jpg" width="40%"></img>
+  
 #### - Format of annotation json file
 
 ```
@@ -78,6 +83,31 @@ Generated Annotations
             |   |-- ...
 |-- 160226_haggling1  
             |-- ...
+```
+
+#### - Format of annotation json file
+  - VoxelPose setting: do not use 15 ~ 18 idx
+  
+```
+0: Neck
+1: Nose
+2: BodyCenter (center of hips)
+3: lShoulder
+4: lElbow
+5: lWrist,
+6: lHip
+7: lKnee
+8: lAnkle
+9: rShoulder
+10: rElbow
+11: rWrist
+12: rHip
+13: rKnee
+14: rAnkle
+#15: lEye
+#16: lEar
+#17: rEye
+#18: rEar
 ```
 
 Docker Environments

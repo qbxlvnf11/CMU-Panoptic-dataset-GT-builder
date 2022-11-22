@@ -72,6 +72,7 @@ Generated Annotations
 
 ```
 |-- 160224_haggling1
+            |   |-- calibration_160422_haggling1.json
             |   |-- 00_01
             |   |   |   |-- annotations
             |   |   |   |   |   |-- 00_03_00000206_gt.json

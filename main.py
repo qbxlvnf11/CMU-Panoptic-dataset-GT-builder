@@ -67,8 +67,15 @@ def main():
 				])
 			)
 
-		# Batch loader
-		
+		# Save camera
+		cam_file = os.path.join('.', config.DATASET.ROOT, seq, 'calibration_{:s}.json'.format(seq))
+		with open(cam_file) as cfile:
+			calib = json.load(cfile)
+		with open(os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)), 'w') as outfile:
+			json.dump(calib, outfile)
+		print('Save camera json file:', os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)))
+
+		# Batch loader	
 		loader = torch.utils.data.DataLoader(
 			panoptic_dataset,
 			batch_size=config.TEST.BATCH_SIZE * len(gpus),
@@ -156,7 +163,7 @@ def main():
 					with open(os.path.join(dir_path, 'annotations', '{}_gt.json'.format(file_name)), 'w') as outfile:
 						json.dump(data, outfile)
 					#print('Save anno file:', os.path.join(dir_path, 'annotations', '{}_gt.json'.format(file_name)))
-
+            
 					# Save GT visualization img
 					save_annotations_vis_img(dir_path, file_name, input, meta) 
 			

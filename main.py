@@ -167,7 +167,7 @@ def main():
 					# Save GT visualization img
 					save_annotations_vis_img(dir_path, file_name, input, meta) 
 			
-				if b % 100 == 0:
+				if len(meta['seq']) > 0 and b % 100 == 0:
 					print(f"{seq}: {meta['seq'][0]}, idx: {b}, image_id: {meta['image'][0]}")
 
 if __name__ == '__main__':

@@ -87,9 +87,9 @@ def main():
 		with torch.no_grad():
 			for b, batch_data in enumerate(loader):
 			
-				inputs, targets_2d, weights_2d, targets_3d, meta, input_heatmap = batch_data
+				inputs, targets_2d, weights_2d, targets_3d, metas, input_heatmap = batch_data
 				
-				for view_num, (meta, input) in enumerate(zip(meta, inputs)):
+				for view_num, (meta, input) in enumerate(zip(metas, inputs)):
 					
 					# Annotation
 					data = {}
@@ -167,7 +167,7 @@ def main():
 					# Save GT visualization img
 					save_annotations_vis_img(dir_path, file_name, input, meta) 
 			
-				if len(meta['seq']) > 0 and b % 100 == 0:
+				if len(metas) > 0 and b % 100 == 0:
 					print(f"{seq}: {meta['seq'][0]}, idx: {b}, image_id: {meta['image'][0]}")
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ from Panoptic_configs.config import config
 from Panoptic_configs.config import update_config
 
 from Panoptic_dataset_class.panoptic import Panoptic
-from Panoptic_dataset_class.utils.vis import save_annotations_vis_img
+from Panoptic_dataset_class.utils.vis import save_origin_img, save_annotations_vis_img
 
 '''
 ANNOTATION_BUILDER_LIST = [
@@ -67,14 +67,6 @@ def main():
 				])
 			)
 
-		# Save camera
-		cam_file = os.path.join('.', config.DATASET.ROOT, seq, 'calibration_{:s}.json'.format(seq))
-		with open(cam_file) as cfile:
-			calib = json.load(cfile)
-		with open(os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)), 'w') as outfile:
-			json.dump(calib, outfile)
-		print('Save camera json file:', os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)))
-
 		# Batch loader	
 		loader = torch.utils.data.DataLoader(
 			panoptic_dataset,
@@ -104,7 +96,9 @@ def main():
 
 					# Make dir			
 					pathlib.Path(os.path.join(dir_path, 'annotations')).mkdir(parents=True, exist_ok=True)	
-					pathlib.Path(os.path.join(dir_path, 'images')).mkdir(parents=True, exist_ok=True) 
+					pathlib.Path(os.path.join(dir_path, 'origin_images')).mkdir(parents=True, exist_ok=True)
+					if config.TEST.SAVE_VIS_IMAGE:
+						pathlib.Path(os.path.join(dir_path, 'vis_images')).mkdir(parents=True, exist_ok=True) 
 	    			
 					for id_num in meta['id']:
 						
@@ -165,10 +159,20 @@ def main():
 					#print('Save anno file:', os.path.join(dir_path, 'annotations', '{}_gt.json'.format(file_name)))
             
 					# Save GT visualization img
-					save_annotations_vis_img(dir_path, file_name, input, meta) 
+					save_origin_img(dir_path, file_name, input)
+					if config.TEST.SAVE_VIS_IMAGE:
+						save_annotations_vis_img(dir_path, file_name, input, meta) 
 			
 				if len(metas) > 0 and b % 100 == 0:
 					print(f"{seq}: {meta['seq'][0]}, idx: {b}, image_id: {meta['image'][0]}")
+
+		# Save camera
+		cam_file = os.path.join('.', config.DATASET.ROOT, seq, 'calibration_{:s}.json'.format(seq))
+		with open(cam_file) as cfile:
+			calib = json.load(cfile)
+		with open(os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)), 'w') as outfile:
+			json.dump(calib, outfile)
+		print('Save camera json file:', os.path.join('.', config.OUTPUT_DIR, seq, 'calibration_{:s}.json'.format(seq)))
 
 if __name__ == '__main__':
 	main()

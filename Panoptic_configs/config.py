@@ -156,6 +156,7 @@ config.TEST.DETECTOR = 'fpn_dcn'
 config.TEST.DETECTOR_DIR = ''
 config.TEST.MODEL_FILE = ''
 config.TEST.HEATMAP_LOCATION_FILE = 'predicted_heatmaps.h5'
+config.TEST.SAVE_VIS_IMAGE = True
 
 # debug
 config.DEBUG = edict()

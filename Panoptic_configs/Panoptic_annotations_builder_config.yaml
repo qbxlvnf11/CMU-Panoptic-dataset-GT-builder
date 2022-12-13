@@ -1,6 +1,6 @@
 GPUS: '0'
 WORKERS: 1
-OUTPUT_DIR: Panoptic_annotation_dicts
+OUTPUT_DIR: Panoptic_images_annotations
 DATASET:
   COLOR_RGB: True
   TEST_DATASET: 'panoptic'
@@ -9,7 +9,7 @@ DATASET:
   TEST_SUBSET: 'annotation_builder'
   ROOTIDX: 2
   SEQ_LIST: ['160422_ultimatum1', '160224_haggling1', '160226_haggling1', '161202_haggling1', '160906_ian1', '160906_ian2', '160906_ian3', '160906_band1', '160906_band2', '160906_band3', '160906_pizza1', '160422_haggling1', '160906_ian5', '160906_band4']
-  CAMERA_NUM: 31
+  CAMERA_NUM: 5 
   CAMERA_LIST: [3, 6, 12, 13, 23]
 NETWORK:
   TARGET_TYPE: gaussian
@@ -20,6 +20,7 @@ NETWORK:
   - 240
   - 128
   SIGMA: 3
-  NUM_JOINTS: 15
+  NUM_JOINTS: 19
 TEST:
   BATCH_SIZE: 1
+  SAVE_VIS_IMAGE: True

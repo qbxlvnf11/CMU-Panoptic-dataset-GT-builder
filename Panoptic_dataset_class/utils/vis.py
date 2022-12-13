@@ -14,6 +14,7 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
+'''
 JOINTS_DEF = {
     'neck': 0,
     'nose': 1,
@@ -34,6 +35,29 @@ JOINTS_DEF = {
     # 'l-ear': 16,
     # 'r-eye': 17,
     # 'r-ear': 18,
+}
+'''
+
+JOINTS_DEF = {
+    'neck': 0,
+    'nose': 1,
+    'mid-hip': 2,
+    'l-shoulder': 3,
+    'l-elbow': 4,
+    'l-wrist': 5,
+    'l-hip': 6,
+    'l-knee': 7,
+    'l-ankle': 8,
+    'r-shoulder': 9,
+    'r-elbow': 10,
+    'r-wrist': 11,
+    'r-hip': 12,
+    'r-knee': 13,
+    'r-ankle': 14,
+    'l-eye': 15,
+    'l-ear': 16,
+    'r-eye': 17,
+    'r-ear': 18
 }
 
 LIMBS = [[0, 1],
@@ -60,9 +84,9 @@ def save_batch_image_with_joints_bb_multi(batch_image,
                                  bbs_vis_clip,
                                  num_person,
                                  ids,
+                                 nrow,
+                                 padding,
                                  file_name=None,
-                                 nrow=8,
-                                 padding=2,
                                  save_flag=True):
     '''
     batch_image: [batch_size, channel, height, width]
@@ -201,33 +225,25 @@ def save_batch_heatmaps_multi(batch_image, batch_heatmaps, file_name, normalize=
 
     cv2.imwrite(file_name, grid_image)
 
-def save_annotations_vis_img(dir_path, file_name, input, meta):	
+def save_annotations_vis_img(dir_path, file_name, input, meta, nrow=8, padding=2):	
     
     # Draw anno
     vis_img = save_batch_image_with_joints_bb_multi(input, meta['joints'], meta['joints_vis'], \
         meta['bounding_boxes'], meta['bounding_boxes_clip'], \
         meta['bounding_boxes_vis'], meta['bounding_boxes_vis_clip'], \
-        meta['num_person'], meta['id'], save_flag=False)
+        meta['num_person'], meta['id'], save_flag=False, nrow=nrow, padding=padding)
     
     # Save image
-    cv2.imwrite(os.path.join(dir_path, 'images', '{}_vis.jpg'.format(file_name)), vis_img)
-    #print('Save vis image:', os.path.join(dir_path, 'images', '{}_gt.jpg'.format(file_name)))
+    cv2.imwrite(os.path.join(dir_path, 'vis_images', '{}_vis.jpg'.format(file_name)), vis_img)
 
-# panoptic
-LIMBS15 = [[0, 1], [0, 2], [0, 3], [3, 4], [4, 5], [0, 9], [9, 10],
-         [10, 11], [2, 6], [2, 12], [6, 7], [7, 8], [12, 13], [13, 14]]
+def save_origin_img(dir_path, file_name, batch_image, nrow=8, padding=2):	
 
-# # h36m
-# LIMBS17 = [[0, 1], [1, 2], [2, 3], [0, 4], [4, 5], [5, 6], [0, 7], [7, 8],
-#          [8, 9], [9, 10], [8, 14], [14, 15], [15, 16], [8, 11], [11, 12], [12, 13]]
-# coco17
-LIMBS17 = [[0, 1], [0, 2], [1, 2], [1, 3], [2, 4], [3, 5], [4, 6], [5, 7], [7, 9], [6, 8], [8, 10], [5, 11], [11, 13], [13, 15],
-        [6, 12], [12, 14], [14, 16], [5, 6], [11, 12]]
-
-# shelf / campus
-LIMBS14 = [[0, 1], [1, 2], [3, 4], [4, 5], [2, 3], [6, 7], [7, 8], [9, 10],
-          [10, 11], [2, 8], [3, 9], [8, 12], [9, 12], [12, 13]]
-
+    batch_image = batch_image.flip(1)
+    grid = torchvision.utils.make_grid(batch_image, nrow, padding, True)
+    ndarr = grid.mul(255).clamp(0, 255).byte().permute(1, 2, 0).cpu().numpy()
+    
+    # Save image
+    cv2.imwrite(os.path.join(dir_path, 'origin_images', '{}.jpg'.format(file_name)), ndarr)
 
 def save_debug_3d_images(config, meta, preds, prefix):
     if not config.DEBUG.DEBUG:

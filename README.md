@@ -46,7 +46,7 @@ Generated Annotations
   <img src="https://user-images.githubusercontent.com/52263269/202972266-2bf65cf9-bd80-47ea-a714-f8bf0d396e80.jpg" width="40%"></img>
   <img src="https://user-images.githubusercontent.com/52263269/202972373-875bcedd-3ac3-42ed-8e7a-2ac8de02dc3d.jpg" width="40%"></img>
   
-#### - Format of annotation json file
+#### - Annotation json file format
 
 ```
 {"bodies": [
@@ -77,7 +77,10 @@ Generated Annotations
             |   |   |   |-- annotations
             |   |   |   |   |   |-- 00_03_00000206_gt.json
             |   |   |   |   |   |-- ...
-            |   |   |   |-- images
+            |   |   |   |-- origin_images
+            |   |   |   |   |   |-- 00_03_00000206.jpg
+            |   |   |   |   |   |-- ...
+            |   |   |   |-- vis_images
             |   |   |   |   |   |-- 00_03_00000206_vis.jpg
             |   |   |   |   |   |-- ...
             |   |-- 00_02
@@ -86,8 +89,7 @@ Generated Annotations
             |-- ...
 ```
 
-#### - Format of annotation json file
-  - VoxelPose setting: do not use 15 ~ 18 idx
+#### - Keypoints format
   
 ```
 0: Neck
@@ -105,10 +107,10 @@ Generated Annotations
 12: rHip
 13: rKnee
 14: rAnkle
-#15: lEye
-#16: lEar
-#17: rEye
-#18: rEar
+15: lEye
+16: lEar
+17: rEye
+18: rEar
 ```
 
 Docker Environments

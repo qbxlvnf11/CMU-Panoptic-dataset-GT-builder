@@ -120,7 +120,7 @@ def main():
 							transformed_joints_3d_vis += [float(vis[0].cpu().numpy())]
 							
 						# 2D keypoints
-						for (j, vid) in zip(meta['joints'][0][id_num], meta['joints_vis'][0][id_num]):
+						for (j, vis) in zip(meta['joints'][0][id_num], meta['joints_vis'][0][id_num]):
 							projected_joints_2d += [float(j[0].cpu().numpy()), float(j[1].cpu().numpy())]
 							projected_joints_2d_vis += [float(vis[0].cpu().numpy())]							
 						

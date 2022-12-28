@@ -47,7 +47,7 @@ Generated Annotations
   <img src="https://user-images.githubusercontent.com/52263269/202972373-875bcedd-3ac3-42ed-8e7a-2ac8de02dc3d.jpg" width="40%"></img>
   
 #### - Annotation json file format
-
+  
 ```
 {"bodies": [
   { "view_id": view id (HD camera id),
@@ -67,6 +67,9 @@ Generated Annotations
   ]
 }
 ```
+
+  - Box format: [left_top_x, left_top_y, right_bottom_x, right_bottom_y]
+  - A box of people that has 3d coordinates but is not visible in the 2d view has coordinates [0, 0, 0, 0].
 
 #### - Annotation structures
 

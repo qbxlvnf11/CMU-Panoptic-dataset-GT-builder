@@ -39,7 +39,7 @@ CMU Panoptic Dataset
 Generated Annotations
 =============
 
-#### - Generating annotation json files and images with joints 3d & joints 2d & bbox & bbox_vis visualized
+#### - Generating annotation json files and visualized images
 
   <img src="https://user-images.githubusercontent.com/52263269/202971006-dd8733de-a8d5-471c-bdb9-20702657e6e1.jpg" width="40%"></img>
   <img src="https://user-images.githubusercontent.com/52263269/202972107-75075843-87d2-4aa5-8b23-c1dbc835cac7.jpg" width="40%"></img>

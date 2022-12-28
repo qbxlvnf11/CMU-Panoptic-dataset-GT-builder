@@ -118,7 +118,7 @@ Generated Annotations
 
 #### - Bounding box format of each 2d view
   - Box format: [left_top_x, left_top_y, right_bottom_x, right_bottom_y]
-  - A box of people that has 3d coordinates but is not visible in the 2d view has coordinates [0, 0, 0, 0].
+  - A box of people that has 3d coordinates but is not visible in the 2d view has coordinates [0, 0, 0, 0]
 
 Docker Environments
 =============

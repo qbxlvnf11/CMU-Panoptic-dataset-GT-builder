@@ -82,8 +82,8 @@ Generated Annotations
   "projected_joints_2d_vis": visualization flags of joints 2d,
   "bbox": bounding boxes created by adding and subtracting an offset from the min/maxvalues of x and y values of each person's GT 2D keypoint,
   "bbox_clip": bbox cliped by image size,
-  "bbox_vis": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true,
-  "bbox_vis_clip": bbox_vis cliped by image size }
+  "vis_bbox": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true,
+  "vis_bbox_clip": vis_bbox cliped by image size }
   , ...
   ]
 }

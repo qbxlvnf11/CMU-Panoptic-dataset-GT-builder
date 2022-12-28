@@ -45,31 +45,6 @@ Generated Annotations
   <img src="https://user-images.githubusercontent.com/52263269/202972107-75075843-87d2-4aa5-8b23-c1dbc835cac7.jpg" width="40%"></img>
   <img src="https://user-images.githubusercontent.com/52263269/202972266-2bf65cf9-bd80-47ea-a714-f8bf0d396e80.jpg" width="40%"></img>
   <img src="https://user-images.githubusercontent.com/52263269/202972373-875bcedd-3ac3-42ed-8e7a-2ac8de02dc3d.jpg" width="40%"></img>
-  
-#### - Annotation json file format
-  
-```
-{"bodies": [
-  { "view_id": view id (HD camera id),
-  "id": person id,
-  "num_person": number of the people,
-  "input_width": image width (1920),
-  "input_height": image height (1080),
-  "transformed_joints_3d": GT transformed joints 3d,
-  "transformed_joints_3d_vis": visualization flags of joints 3d,
-  "projected_joints_2d": GT joints 2d projected by joints 3d using camera parameters in each view,
-  "projected_joints_2d_vis": visualization flags of joints 2d,
-  "bbox": bounding boxes created by adding and subtracting an offset from the min/maxvalues of x and y values of each person's GT 2D keypoint,
-  "bbox_clip": bbox cliped by image size,
-  "bbox_vis": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true,
-  "bbox_vis_clip": bbox_vis cliped by image size }
-  , ...
-  ]
-}
-```
-
-  - Box format: [left_top_x, left_top_y, right_bottom_x, right_bottom_y]
-  - A box of people that has 3d coordinates but is not visible in the 2d view has coordinates [0, 0, 0, 0].
 
 #### - Annotation structures
 
@@ -90,6 +65,28 @@ Generated Annotations
             |   |-- ...
 |-- 160226_haggling1  
             |-- ...
+```
+
+#### - Annotation json file format
+  
+```
+{"bodies": [
+  { "view_id": view id (HD camera id),
+  "id": person id,
+  "num_person": number of the people,
+  "input_width": image width (1920),
+  "input_height": image height (1080),
+  "transformed_joints_3d": GT transformed joints 3d,
+  "transformed_joints_3d_vis": visualization flags of joints 3d,
+  "projected_joints_2d": GT joints 2d projected by joints 3d using camera parameters in each view,
+  "projected_joints_2d_vis": visualization flags of joints 2d,
+  "bbox": bounding boxes created by adding and subtracting an offset from the min/maxvalues of x and y values of each person's GT 2D keypoint,
+  "bbox_clip": bbox cliped by image size,
+  "bbox_vis": bounding boxes created by adding and subtracting an offset from the min/max values of x and y values of each person's GT 2D keypoint that visualization flag value is true,
+  "bbox_vis_clip": bbox_vis cliped by image size }
+  , ...
+  ]
+}
 ```
 
 #### - Keypoints format
@@ -115,6 +112,13 @@ Generated Annotations
 17: rEye
 18: rEar
 ```
+
+  - 3d keypoints: [x0, y0, z0, x1, y1, z1, ...]
+  - 2d keypoints: [x0, y0, x1, y1, ...]
+
+#### - Bounding box format of each 2d view
+  - Box format: [left_top_x, left_top_y, right_bottom_x, right_bottom_y]
+  - A box of people that has 3d coordinates but is not visible in the 2d view has coordinates [0, 0, 0, 0].
 
 Docker Environments
 =============

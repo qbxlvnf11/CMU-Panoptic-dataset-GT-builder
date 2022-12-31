@@ -120,21 +120,21 @@ class JointsDataset(Dataset):
         boxes_clip = db_rec['bounding_boxes_clip']
         boxes_clip = scale_coords(boxes_clip, data_numpy.shape, self.image_size)
 
-        boxes_vis = db_rec['bounding_boxes_vis']
-        boxes_vis = scale_coords(boxes_vis, data_numpy.shape, self.image_size)
+        vis_boxes = db_rec['vis_bounding_boxes']
+        vis_boxes = scale_coords(vis_boxes, data_numpy.shape, self.image_size)
 
-        boxes_vis_clip = db_rec['bounding_boxes_vis_clip']
-        boxes_vis_clip = scale_coords(boxes_vis_clip, data_numpy.shape, self.image_size)
+        vis_boxes_clip = db_rec['vis_bounding_boxes_clip']
+        vis_boxes_clip = scale_coords(vis_boxes_clip, data_numpy.shape, self.image_size)
         
         boxes_u = np.zeros((self.maximum_person, 4))
         boxes_clip_u = np.zeros((self.maximum_person, 4))
-        boxes_vis_u = np.zeros((self.maximum_person, 4))
-        boxes_vis_clip_u = np.zeros((self.maximum_person, 4))
+        vis_boxes_u = np.zeros((self.maximum_person, 4))
+        vis_boxes_clip_u = np.zeros((self.maximum_person, 4))
         for i in range(nposes):
             boxes_u[i] = boxes[i]
             boxes_clip_u[i] = boxes_clip[i]
-            boxes_vis_u[i] = boxes_vis[i]
-            boxes_vis_clip_u[i] = boxes_vis_clip[i]
+            vis_boxes_u[i] = vis_boxes[i]
+            vis_boxes_clip_u[i] = vis_boxes_clip[i]
         
         for n in range(nposes):
             for i in range(len(joints[0])):
@@ -203,8 +203,8 @@ class JointsDataset(Dataset):
             'camera': db_rec['camera'],
             'bounding_boxes': boxes_u,
             'bounding_boxes_clip': boxes_clip_u,
-            'bounding_boxes_vis': boxes_vis_u,
-            'bounding_boxes_vis_clip': boxes_vis_clip_u
+            'vis_bounding_boxes': vis_boxes_u,
+            'vis_bounding_boxes_clip': vis_boxes_clip_u
         }
 
         return input, target_heatmap, target_weight, target_3d, meta, input_heatmap
@@ -387,7 +387,3 @@ class JointsDataset(Dataset):
                 target = np.clip(target, 0, 1)
 
         return target
-
-
-
-

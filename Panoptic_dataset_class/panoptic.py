@@ -70,10 +70,10 @@ JOINTS_DEF = {
     'r-hip': 12,
     'r-knee': 13,
     'r-ankle': 14,
-    # 'l-eye': 15,
-    # 'l-ear': 16,
-    # 'r-eye': 17,
-    # 'r-ear': 18,
+    'l-eye': 15,
+    'l-ear': 16,
+    'r-eye': 17,
+    'r-ear': 18
 }
 
 LIMBS = [[0, 1],
@@ -132,103 +132,88 @@ class Panoptic(JointsDataset):
         self.db_size = len(self.db)
         print('DB size:', self.db_size)
 
-    def _get_avg_distance_keypoints(self, pose2d, joints_vis):
-        
-        dist_sum = 0
-        num = 0
-        
-        # Distance of between neck and nose
-        if joints_vis[0] and joints_vis[1]:
-            dist_neck_nose = np.linalg.norm(np.array(pose2d[0]) - np.array(pose2d[1]))
-            dist_sum += dist_neck_nose
-            num += 1
-
-        # Distance of between left shoulder and left hip
-        elif joints_vis[3] and joints_vis[6]:
-            dist_lshoulder_lhip = np.linalg.norm(np.array(pose2d[3]) - np.array(pose2d[6]))
-            dist_sum += (dist_lshoulder_lhip / 2)
-            num += 1
-
-        # Distance of between left hip and left knee
-        elif joints_vis[6] and joints_vis[7]:
-            dist_lhip_lknee = np.linalg.norm(np.array(pose2d[6]) - np.array(pose2d[7]))
-            dist_sum += dist_lhip_lknee
-            num += 1
-
-        # Distance of between left knee and left ankle
-        elif joints_vis[7] and joints_vis[8]:
-            dist_lknee_lankle = np.linalg.norm(np.array(pose2d[7]) - np.array(pose2d[8]))
-            dist_sum += dist_lknee_lankle
-            num += 1
-
-        # Distance of between right shoulder and right hip
-        elif joints_vis[9] and joints_vis[12]:
-            dist_rshoulder_rhip = np.linalg.norm(np.array(pose2d[9]) - np.array(pose2d[12]))
-            dist_sum += (dist_rshoulder_rhip / 2)
-            num += 1
-
-        # Distance of between right hip and right knee
-        elif joints_vis[12] and joints_vis[13]:
-            dist_rshoulder_rknee = np.linalg.norm(np.array(pose2d[12]) - np.array(pose2d[13]))
-            dist_sum += dist_rshoulder_rknee
-            num += 1
-
-        # Distance of between right knee and right ankle
-        elif joints_vis[13] and joints_vis[14]:
-            dist_rknee_rankle = np.linalg.norm(np.array(pose2d[13]) - np.array(pose2d[14]))
-            dist_sum += dist_rknee_rankle
-            num += 1
-        
-        if num == 0 : return 0
-        else: return dist_sum / num
-    
-    def _get_human_bb_from_pose2d(self, pose2d, joints_vis, width=1920, height=1080, ratio=0.1, \
-        width_offset_div=17, up_offset_div=7, under_offset_div=10, distance_mul=1.2, points_thr=3):
+    def _get_human_bb_from_pose2d(self, pose2d, joints_vis, width=1920, height=1080, \
+        width_offset_div=5, height_offset_div=5, points_thr=0):
         
         boxes = []
         vis_pose2d = []
-        offset_height = height #self.image_size[0]
-        offset_width = width #self.image_size[1]
-        offset = (offset_width / width_offset_div, offset_height / up_offset_div, offset_height / under_offset_div)
+        # offset_height = height #self.image_size[0]
+        # offset_width = width #self.image_size[1]
+        # offset = (offset_width / width_offset_div, offset_height / up_offset_div, offset_height / under_offset_div)
         
         for (p, v) in zip(pose2d, joints_vis):
             
             if v:
                 vis_pose2d.append(p)
-                
-        if len(vis_pose2d) > points_thr:
+        len_vis = len(vis_pose2d)
+
+        if len_vis > points_thr:
             
             vis_pose2d = np.array(vis_pose2d)
             target_pose_list = [pose2d, vis_pose2d]
-             
+
             for target_pose in target_pose_list:
+                # Max, min axis
                 x_min = np.min(target_pose[:,0])
                 x_max = np.max(target_pose[:,0])
                 y_min = np.min(target_pose[:,1])
                 y_max = np.max(target_pose[:,1])
                 
-                '''
-                index_x_min = np.argmin(target_pose[:,0])
-                index_x_max = np.argmax(target_pose[:,0])
-                index_y_min = np.argmin(target_pose[:,1])
-                index_y_max = np.argmax(target_pose[:,1])
-                '''
-                
+                # Index of max, min axis
+                # index_x_min = np.argmin(target_pose[:,0])
+                # index_x_max = np.argmax(target_pose[:,0])
+                # index_y_min = np.argmin(target_pose[:,1])
+                # index_y_max = np.argmax(target_pose[:,1])
+
                 # Box width, height
-                bb_width = x_max - x_min
-                bb_height = y_max - y_min
-                
-                # Avg of distance
-                #avg_distance_keypoints = self._get_avg_distance_keypoints(pose2d, joints_vis) * distance_mul
-                
-                x_lef_top = x_min - offset[0]
-                y_lef_top = y_min - offset[1]
-                x_rig_bot = x_max + offset[0]
-                y_rig_bot = y_max + offset[2]
-                x_lef_top_clip = np.clip(x_min - offset[0], 0, width)
-                y_lef_top_clip = np.clip(y_min - offset[1], 0, height)
-                x_rig_bot_clip = np.clip(x_max + offset[0], 0, width)
-                y_rig_bot_clip = np.clip(y_max + offset[2], 0, height)	 
+                bb_width = float(x_max - x_min)
+                bb_height = float(y_max - y_min)
+                width_ratio = 0
+                height_ratio = 0
+
+                # Set offset
+                if bb_width != 0:
+
+                    num_distance = 0
+                    left_eye_nose_distance = 0
+                    if joints_vis[1] and joints_vis[15]:
+                        left_eye_nose_distance = np.linalg.norm(np.array(pose2d[1]) - np.array(pose2d[15]))
+                        num_distance += 1
+                    right_eye_nose_distance = 0
+                    if joints_vis[1] and joints_vis[17]:
+                        right_eye_nose_distance = np.linalg.norm(np.array(pose2d[1]) - np.array(pose2d[17]))
+                        num_distance += 1
+
+                    if num_distance != 0:
+                        eye_nose_distance = (left_eye_nose_distance + right_eye_nose_distance) / float(num_distance)
+                        offsets = [eye_nose_distance * 3.5, eye_nose_distance * 3.5, eye_nose_distance * 3, eye_nose_distance * 4]
+                    else: 
+                        # width_ratio = bb_width / width
+                        height_ratio = bb_height / height
+
+                        offsets = [(height / width_offset_div) * (height_ratio / 2), (height / width_offset_div) * (height_ratio / 2), (height / height_offset_div) * (height_ratio / 2), (height / height_offset_div) * (height_ratio / 2)]
+
+                    # if index_x_min == 3:
+                    #     offsets[0] = offsets[0] / 2
+                    # elif index_x_min == 4:
+                    #     offsets[0] = offsets[0] / 2
+                    
+                    # if index_x_max == 9:
+                    #     offsets[1] = offsets[1] / 2
+                    # elif index_x_max == 10:
+                    #     offsets[1] = offsets[1] / 2
+
+                else:
+                    offsets = [100, 100, 100, 100]
+
+                x_lef_top = x_min - offsets[0]
+                y_lef_top = y_min - offsets[2]
+                x_rig_bot = x_max + offsets[1]
+                y_rig_bot = y_max + offsets[3]
+                x_lef_top_clip = np.clip(x_min - offsets[0], 0, width-1)
+                y_lef_top_clip = np.clip(y_min - offsets[2], 0, height-1)
+                x_rig_bot_clip = np.clip(x_max + offsets[1], 0, width-1)
+                y_rig_bot_clip = np.clip(y_max + offsets[3], 0, height-1)	 
                 
                 boxes.append([x_lef_top, y_lef_top, x_rig_bot, y_rig_bot])
                 boxes.append([x_lef_top_clip, y_lef_top_clip, x_rig_bot_clip, y_rig_bot_clip])
@@ -263,10 +248,8 @@ class Panoptic(JointsDataset):
                         try:
                         	bodies = json.load(dfile)['bodies']
                         except Exception as e:
-                        	continue
-                    if len(bodies) == 0:
-                        continue
-
+                        	bodies = []
+                    
                     for k, v in cameras.items():
                         postfix = osp.basename(file).replace('body3DScene', '')
                         prefix = '{:02d}_{:02d}'.format(k[0], k[1])
@@ -281,8 +264,8 @@ class Panoptic(JointsDataset):
                         all_poses_vis = []
                         all_bbs = []
                         all_bbs_clip = []
-                        all_bbs_vis = []
-                        all_bbs_vis_clip = []
+                        all_vis_bbs = []
+                        all_vis_bbs_clip = []
                         
                         for id_num, body in enumerate(bodies):
                             pose3d = np.array(body['joints19']).reshape((-1, 4))
@@ -316,7 +299,7 @@ class Panoptic(JointsDataset):
                             check = np.bitwise_and(x_check, y_check)
                             joints_vis[np.logical_not(check)] = 0
                             
-                            boxes = self._get_human_bb_from_pose2d(pose2d, joints_vis)
+                            boxes = self._get_human_bb_from_pose2d(pose2d, joints_vis, width, height)
 
                             all_ids.append(id_num)
                             all_poses.append(pose2d)
@@ -325,36 +308,37 @@ class Panoptic(JointsDataset):
                                     np.reshape(joints_vis, (-1, 1)), 2, axis=1))
                             all_bbs.append(boxes[0])
                             all_bbs_clip.append(boxes[1])
-                            all_bbs_vis.append(boxes[2])
-                            all_bbs_vis_clip.append(boxes[3])                            
+                            all_vis_bbs.append(boxes[2])
+                            all_vis_bbs_clip.append(boxes[3])                            
                             
-                        if len(all_poses_3d) > 0:
-                            our_cam = {}
-                            our_cam['R'] = v['R']
-                            our_cam['T'] = -np.dot(v['R'].T, v['t']) * 10.0  # cm to mm
-                            our_cam['fx'] = np.array(v['K'][0, 0])
-                            our_cam['fy'] = np.array(v['K'][1, 1])
-                            our_cam['cx'] = np.array(v['K'][0, 2])
-                            our_cam['cy'] = np.array(v['K'][1, 2])
-                            our_cam['k'] = v['distCoef'][[0, 1, 4]].reshape(3, 1)
-                            our_cam['p'] = v['distCoef'][[2, 3]].reshape(2, 1)
+                        #if len(all_poses_3d) > 0:
+                        our_cam = {}
+                        our_cam['R'] = v['R']
+                        our_cam['T'] = -np.dot(v['R'].T, v['t']) * 10.0  # cm to mm
+                        our_cam['fx'] = np.array(v['K'][0, 0])
+                        our_cam['fy'] = np.array(v['K'][1, 1])
+                        our_cam['cx'] = np.array(v['K'][0, 2])
+                        our_cam['cy'] = np.array(v['K'][1, 2])
+                        our_cam['k'] = v['distCoef'][[0, 1, 4]].reshape(3, 1)
+                        our_cam['p'] = v['distCoef'][[2, 3]].reshape(2, 1)
 
-                            db.append({
-                                'key': "{}_{}{}".format(seq, prefix, postfix.split('.')[0]),
-                                'view_id': prefix,
-                                'seq': seq,
-                                'image': osp.join(self.dataset_root, image),
-                                'id': all_ids,
-                                'joints_3d': all_poses_3d,
-                                'joints_3d_vis': all_poses_vis_3d,
-                                'joints_2d': all_poses,
-                                'joints_2d_vis': all_poses_vis,
-                                'bounding_boxes': all_bbs,
-                                'bounding_boxes_clip': all_bbs_clip,
-                                'bounding_boxes_vis': all_bbs_vis,
-                                'bounding_boxes_vis_clip': all_bbs_vis_clip,
-                                'camera': our_cam
-                            })
+                        db.append({
+                            'key': "{}_{}{}".format(seq, prefix, postfix.split('.')[0]),
+                            'view_id': prefix,
+                            'seq': seq,
+                            'image': osp.join(self.dataset_root, image),
+                            'id': all_ids,
+                            'joints_3d': all_poses_3d,
+                            'joints_3d_vis': all_poses_vis_3d,
+                            'joints_2d': all_poses,
+                            'joints_2d_vis': all_poses_vis,
+                            'bounding_boxes': all_bbs,
+                            'bounding_boxes_clip': all_bbs_clip,
+                            'vis_bounding_boxes': all_vis_bbs,
+                            'vis_bounding_boxes_clip': all_vis_bbs_clip,
+                            'camera': our_cam
+                        })
+        
         return db
 
     def _get_cam(self, seq):

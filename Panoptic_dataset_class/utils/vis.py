@@ -230,7 +230,7 @@ def save_annotations_vis_img(dir_path, file_name, input, meta, nrow=8, padding=2
     # Draw anno
     vis_img = save_batch_image_with_joints_bb_multi(input, meta['joints'], meta['joints_vis'], \
         meta['bounding_boxes'], meta['bounding_boxes_clip'], \
-        meta['bounding_boxes_vis'], meta['bounding_boxes_vis_clip'], \
+        meta['vis_bounding_boxes'], meta['vis_bounding_boxes_clip'], \
         meta['num_person'], meta['id'], save_flag=False, nrow=nrow, padding=padding)
     
     # Save image

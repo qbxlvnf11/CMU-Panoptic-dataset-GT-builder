@@ -111,8 +111,8 @@ def main():
 						projected_joints_2d_vis = []
 						bb = []
 						bb_clip = []
-						bb_vis = []
-						bb_vis_clip = []
+						vis_bb = []
+						vis_bb_clip = []
 						
 						# 3D keypoints
 						for (j, vis) in zip(meta['joints_3d'][0][id_num], meta['joints_3d_vis'][0][id_num]):
@@ -131,11 +131,11 @@ def main():
 						box_clip = meta['bounding_boxes_clip'][0][id_num]
 						bb_clip += [float(box_clip[0].cpu().numpy()), float(box_clip[1].cpu().numpy()), float(box_clip[2].cpu().numpy()), float(box_clip[3].cpu().numpy())]
 
-						box_vis = meta['bounding_boxes_vis'][0][id_num]
-						bb_vis += [float(box_vis[0].cpu().numpy()), float(box_vis[1].cpu().numpy()), float(box_vis[2].cpu().numpy()), float(box_vis[3].cpu().numpy())]
+						vis_box = meta['vis_bounding_boxes'][0][id_num]
+						vis_bb += [float(vis_box[0].cpu().numpy()), float(vis_box[1].cpu().numpy()), float(vis_box[2].cpu().numpy()), float(vis_box[3].cpu().numpy())]
 
-						box_vis_clip = meta['bounding_boxes_vis_clip'][0][id_num]
-						bb_vis_clip += [float(box_vis_clip[0].cpu().numpy()), float(box_vis_clip[1].cpu().numpy()), float(box_vis_clip[2].cpu().numpy()), float(box_vis_clip[3].cpu().numpy())]
+						vis_box_clip = meta['vis_bounding_boxes_clip'][0][id_num]
+						vis_bb_clip += [float(vis_box_clip[0].cpu().numpy()), float(vis_box_clip[1].cpu().numpy()), float(vis_box_clip[2].cpu().numpy()), float(vis_box_clip[3].cpu().numpy())]
 						
 						data['bodies'].append({
 							"view_id": view_id,
@@ -149,8 +149,8 @@ def main():
 							"projected_joints_2d_vis": projected_joints_2d_vis,
 							"bbox": bb,
 							"bbox_clip": bb_clip,
-							"bbox_vis": bb_vis,
-							"bbox_vis_clip": bb_vis_clip
+							"vis_bbox": vis_bb,
+							"vis_bbox_clip": vis_bb_clip
 						})
 
 					# Save annotations

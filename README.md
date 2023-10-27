@@ -145,7 +145,7 @@ How to use
 python main.py --panoptic_config_file_path ./Panoptic_configs/Panoptic_annotations_builder_config.yaml
 ```
 
-#### - Panoptic dataset preparation
+#### - Panoptic dataset download & preparation
   - Select the dataset and camera id to download by editing the values of list in line 11 & 12
 
 ```

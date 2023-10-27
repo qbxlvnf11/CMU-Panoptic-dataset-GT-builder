@@ -152,6 +152,7 @@ python main.py --panoptic_config_file_path ./Panoptic_configs/Panoptic_annotatio
 apt-get install wget
 cd ./Panoptic_download_toolbox_scripts
 ./getData_list.sh
+./extractAll_list.sh
 ```
 
 References

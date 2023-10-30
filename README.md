@@ -146,7 +146,8 @@ python main.py --panoptic_config_file_path ./Panoptic_configs/Panoptic_annotatio
 ```
 
 #### - Panoptic dataset download & preparation
-  - Select the dataset and camera id to download by editing the values of list in line 11 & 12
+  - Variable 'datasets': select the sequences to download
+  - Variable 'nodes': select the camera ids to download
 
 ```
 apt-get install wget
